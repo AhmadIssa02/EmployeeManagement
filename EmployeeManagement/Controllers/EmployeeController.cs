@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Models.Repositories.Interfaces;
+﻿using EmployeeManagement.Models.Domain;
+using EmployeeManagement.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
@@ -12,15 +13,36 @@ namespace EmployeeManagement.Controllers
         {
             _employeeRepository = employeeRepository;
         }
-        public string Index()
-        {
-            return "Welcome from MVC";
-        }
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]   
         public IActionResult GetEmployeeById(int id)
         {
             var emp = _employeeRepository.GetById(id);
             return Ok(emp);
         }
+        [HttpGet("getAll")]
+        public IActionResult GetAll()
+        {
+            return Ok(_employeeRepository.GetAll());
+        }
+        [HttpPost]
+        public IActionResult AddEmployee(Employee employee)
+        {
+            bool result = _employeeRepository.add(employee);
+            return Ok(result);
+        }
+        [HttpPut]
+        public IActionResult editEmployee(Employee employee) { 
+            var result = _employeeRepository.edit(employee);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult deleteEmployee(int id)
+        {
+            var result = _employeeRepository.delete(id);
+            return Ok(result);
+        }
+
     }
+
 }

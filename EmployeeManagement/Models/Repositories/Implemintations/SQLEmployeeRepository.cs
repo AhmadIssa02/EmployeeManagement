@@ -3,7 +3,7 @@ using EmployeeManagement.Models.Repositories.Interfaces;
 
 namespace EmployeeManagement.Models.Repositories.Implemintations
 {
-    public class SQLEmployeeRepository : IEmployeeRepository
+    public class SQLEmployeeRepository //: IEmployeeRepository
     {
         private List<Employee> _employees;
 
@@ -22,6 +22,10 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
         {
             var emp = _employees.Find(emp => emp.Id == id);
             return emp;
+        }
+        public IList <Employee> GetAll()
+        {
+            return _employees;
         }
     }
 }
