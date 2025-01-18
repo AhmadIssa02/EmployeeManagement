@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSwaggerGen();
 
 
