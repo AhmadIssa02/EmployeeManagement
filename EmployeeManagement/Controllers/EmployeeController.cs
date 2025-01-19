@@ -20,6 +20,7 @@ namespace EmployeeManagement.Controllers
             return Ok(emp);
         }
         [HttpGet("getAll")]
+        [Produces("application/xml")]
         public IActionResult GetAll()
         {
             return Ok(_employeeRepository.GetAll());
