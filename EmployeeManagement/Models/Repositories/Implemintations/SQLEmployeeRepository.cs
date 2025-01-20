@@ -1,31 +1,54 @@
-﻿using EmployeeManagement.Models.Domain;
+﻿using EmployeeManagement.Data;
+using EmployeeManagement.Models.Domain;
 using EmployeeManagement.Models.Repositories.Interfaces;
 
 namespace EmployeeManagement.Models.Repositories.Implemintations
 {
-    public class SQLEmployeeRepository //: IEmployeeRepository
+    public class SQLEmployeeRepository : IEmployeeRepository
     {
-        private List<Employee> _employees;
+        private readonly AppDbContext _dbContext;
 
-        public SQLEmployeeRepository()
+        public SQLEmployeeRepository( AppDbContext dbContext)
         {
-            _employees = new List<Employee>()
-                {
-                    new Employee() { Id = 1, Name = "Ahmad", Department = "HR", Email = "mary@pragimtech.com" },
-                    new Employee() { Id = 2, Name = "Mohammad", Department = "IT", Email = "john@pragimtech.com" },
-                    new Employee() { Id = 3, Name = "wasan", Department = "IT", Email = "sam@pragimtech.com" },
-                    new Employee() { Id = 4, Name = "dima", Department = "IT", Email = "Ali@pragimtech.com" },
-                };
+            _dbContext = dbContext;
 
-        }
-        public Employee GetById(int id)
-        {
-            var emp = _employees.Find(emp => emp.Id == id);
-            return emp;
         }
         public IList <Employee> GetAll()
         {
-            return _employees;
+            return _dbContext.Employees.ToList();
+        }
+        public Employee GetById(int id)
+        {
+            return _dbContext.Employees.Find(id);
+        }
+
+        public bool add(Employee employee)
+        {
+            _dbContext.Employees.Add(employee);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool edit(Employee employee)
+        {
+            var emp = _dbContext.Employees.Attach(employee);
+            emp.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool delete(int id)
+        {
+            var emp= _dbContext.Employees.Find(id);
+            if(emp != null) {
+                _dbContext.Employees.Remove(emp);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
