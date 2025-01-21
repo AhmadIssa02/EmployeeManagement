@@ -7,8 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
 builder.Services.AddControllers().AddXmlSerializerFormatters();
-builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EmployeeManagementDB;Integrated Security=True;Connect Timeout=30;Trust Server Certificate=False;")));
-
+builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer( "Data Source=DESKTOP-VBLVTOQ;Initial Catalog=EmployeeManagementDB;Integrated Security=True;Connect Timeout=30;Trust Server Certificate=true"));
 builder.Services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSwaggerGen();
