@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Models.Domain;
+﻿using EmployeeManagement.ExtensionMethod;
+using EmployeeManagement.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Data
@@ -10,6 +11,12 @@ namespace EmployeeManagement.Data
         }
             public DbSet<Employee> Employees { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.seedDepartment();
+            modelBuilder.seedEmployee();
+        }
+
+
     }
 }

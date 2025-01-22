@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EmployeeManagement.Models.Domain
 {
@@ -15,5 +16,8 @@ namespace EmployeeManagement.Models.Domain
         public int salary { get; set; }
 
         public string? address{ get; set; }
+        public Department dept { get; set; }
+        [ForeignKey (nameof(DeptId))]
+        public int DeptId { get; set; }
     }
 }
