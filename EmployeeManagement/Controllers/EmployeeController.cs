@@ -26,9 +26,9 @@ namespace EmployeeManagement.Controllers
             return Ok(_employeeRepository.GetAll());
         }
         [HttpPost]
-        public IActionResult AddEmployee(Employee employee)
+        public IActionResult AddEmployee(Models.DTOs.EmployeeDTO employeeDto)
         {
-            bool result = _employeeRepository.add(employee);
+            bool result = _employeeRepository.add(employeeDto);
             return Ok(result);
         }
         [HttpPut]

@@ -1,6 +1,8 @@
 ﻿using EmployeeManagement.Data;
 using EmployeeManagement.Models.Domain;
+using EmployeeManagement.Models.DTOs;
 using EmployeeManagement.Models.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Models.Repositories.Implemintations
 {
@@ -17,14 +19,18 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
         {
             return _dbContext.Employees.ToList();
         }
-        public Employee GetById(int id)
+        public EmployeeDTO GetById(int id)
         {
-            return _dbContext.Employees.Find(id);
+            var employee = _dbContext.Employees.Include(emp => emp.dept).FirstOrDefault(emp => emp.Id == id);
+            var employeeDto = empToDto(employee);
+            return employeeDto;
         }
 
-        public bool add(Employee employee)
-        {
-            _dbContext.Employees.Add(employee);
+        public bool add(EmployeeDTO employee)
+        {   
+            var emp = DtoToEmployee(employee);
+
+            _dbContext.Employees.Add(emp);
             _dbContext.SaveChanges();
             return true;
         }
@@ -49,6 +55,34 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
             {
                 return false;
             }
+        }
+    private EmployeeDTO empToDto( Employee employee)
+        {
+            var employeeDto = new EmployeeDTO()
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                address = employee.address,
+                Email = employee.Email,
+                salary = employee.salary,
+                DeptName = employee.dept.name,
+            };
+            return employeeDto;
+
+        }
+        private Employee DtoToEmployee(EmployeeDTO empDto)
+        {
+            var employee = new Employee
+            {
+                Id = empDto.Id,
+                Name = empDto.Name,
+                address = empDto.address,
+                Email = empDto.Email,
+                salary = empDto.salary,
+                DeptId = empDto.DeptId,
+
+            };
+            return employee;
         }
     }
 }

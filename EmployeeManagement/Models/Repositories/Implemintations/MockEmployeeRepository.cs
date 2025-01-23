@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Models.Domain;
+using EmployeeManagement.Models.DTOs;
 using EmployeeManagement.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -19,22 +20,10 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
                 };
 
         }
-        public Employee GetById(int id)
-        {
-            var emp = _employees.Find(emp => emp.Id == id);
-            return emp;
-        }
-
         public IList <Employee> GetAll()
         {
             return _employees;
         }
-        public bool add(Employee emp)
-        {
-            _employees.Add(emp);
-            return true;        
-        }
-
         public bool edit (Employee employee)
         {
             var emp = _employees.Find(emp => emp.Id == employee.Id);
@@ -55,6 +44,14 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
          
         }
 
+        EmployeeDTO IEmployeeRepository.GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
 
+        public bool add(EmployeeDTO employee)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

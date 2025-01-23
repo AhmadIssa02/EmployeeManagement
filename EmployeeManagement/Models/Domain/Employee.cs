@@ -12,7 +12,7 @@ namespace EmployeeManagement.Models.Domain
         [EmailAddress]
         [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]
         public string Email { get; set; }
-        public string Department { get; set; }
+        public string? Department { get; set; }
         public int salary { get; set; }
 
         public string? address{ get; set; }
