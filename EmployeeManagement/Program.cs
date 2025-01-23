@@ -2,6 +2,7 @@ using EmployeeManagement.Data;
 using EmployeeManagement.Models.Repositories.Implemintations;
 using EmployeeManagement.Models.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(
 builder.Services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 
 var app = builder.Build();

@@ -1,4 +1,6 @@
-﻿using EmployeeManagement.Data;
+﻿using AutoMapper;
+using EmployeeManagement.Data;
+using EmployeeManagement.Mapping;
 using EmployeeManagement.Models.Domain;
 using EmployeeManagement.Models.DTOs;
 using EmployeeManagement.Models.Repositories.Interfaces;
@@ -9,10 +11,12 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
     public class SQLEmployeeRepository : IEmployeeRepository
     {
         private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public SQLEmployeeRepository( AppDbContext dbContext)
+        public SQLEmployeeRepository( AppDbContext dbContext, IMapper mapper) 
         {
             _dbContext = dbContext;
+            _mapper = mapper;
 
         }
         public IList <Employee> GetAll()
@@ -22,13 +26,16 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
         public EmployeeDTO GetById(int id)
         {
             var employee = _dbContext.Employees.Include(emp => emp.dept).FirstOrDefault(emp => emp.Id == id);
-            var employeeDto = empToDto(employee);
+            
+            //EmployeeMap 
+            var employeeDto = _mapper.Map<EmployeeDTO>(employee);
+
             return employeeDto;
-        }
+        } 
 
         public bool add(EmployeeDTO employee)
         {   
-            var emp = DtoToEmployee(employee);
+            var emp = _mapper.Map<Employee>(employee);
 
             _dbContext.Employees.Add(emp);
             _dbContext.SaveChanges();
