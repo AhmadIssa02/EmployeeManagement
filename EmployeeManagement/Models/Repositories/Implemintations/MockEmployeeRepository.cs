@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace EmployeeManagement.Models.Repositories.Implemintations
 {
-    public class MockEmployeeRepository : IEmployeeRepository
+    public class MockEmployeeRepository //: IEmployeeRepository
     {
         private List<Employee> _employees;
 
@@ -44,10 +44,10 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
          
         }
 
-        EmployeeDTO IEmployeeRepository.GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //EmployeeDTO IEmployeeRepository.GetById(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public bool add(EmployeeDTO employee)
         {

@@ -19,9 +19,18 @@ namespace EmployeeManagement.Models.Repositories.Implemintations
             _mapper = mapper;
 
         }
-        public IList <Employee> GetAll()
+        public IList <EmployeeDTO> GetAll()
         {
-            return _dbContext.Employees.ToList();
+            var emp = _dbContext.Employees.Include(emp => emp.dept).ToList();
+            var empList = _mapper.Map<List <EmployeeDTO>>(emp);
+            return empList; 
+            //List<EmployeeDTO> list = new List<EmployeeDTO>();
+            //foreach (Employee employee in emp)
+            //{
+            //    var empDto = empToDto(employee);
+            //    list.Add(empDto);
+            //}
+            //return list;
         }
         public EmployeeDTO GetById(int id)
         {

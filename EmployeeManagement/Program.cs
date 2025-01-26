@@ -1,6 +1,8 @@
 using EmployeeManagement.Data;
+using EmployeeManagement.Models.IRepository;
 using EmployeeManagement.Models.Repositories.Implemintations;
 using EmployeeManagement.Models.Repositories.Interfaces;
+using EmployeeManagement.Models.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -11,6 +13,7 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDB")));
 builder.Services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
