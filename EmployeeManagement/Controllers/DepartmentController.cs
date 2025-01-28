@@ -43,12 +43,31 @@ namespace EmployeeManagement.Controllers
         [HttpGet("GetAll")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task <IActionResult> GetDepartments()
+        public async Task<IActionResult> GetDepartments()
         {
             try
             {
                 _logger.LogInformation("Get Department Start");
                 var departments = await _unitOfWork.Departments.GetAll();
+                var results = _mapper.Map<IList<DepartmentDto>>(departments);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Internal server error:" + ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
+
+        }
+        [HttpGet("name/{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetDepartment(String name)
+        {
+            try
+            {
+                _logger.LogInformation("Get Department Start");
+                var departments = await _unitOfWork.Departments.GetAll(d=>d.name.Contains(name));
                 var results = _mapper.Map<IList<DepartmentDto>>(departments);
                 return Ok(results);
             }
@@ -65,11 +84,11 @@ namespace EmployeeManagement.Controllers
         {
             try
             {
-                //if (!ModelState.IsValid)
-                //{
-                //    return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
 
-                //}
+                }
                 await _unitOfWork.Departments.Insert(department);
                 await _unitOfWork.Save();
                 return Ok(department);

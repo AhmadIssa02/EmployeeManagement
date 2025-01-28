@@ -1,8 +1,10 @@
 using EmployeeManagement.Data;
+using EmployeeManagement.Models.Domain;
 using EmployeeManagement.Models.IRepository;
 using EmployeeManagement.Models.Repositories.Implemintations;
 using EmployeeManagement.Models.Repositories.Interfaces;
 using EmployeeManagement.Models.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -11,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
 builder.Services.AddControllers().AddXmlSerializerFormatters();
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDB")));
+
+builder.Services.AddIdentity<APIUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -39,6 +44,7 @@ if (app.Environment.IsDevelopment())
 //app.UseFileServer(options);
 
 app.UseStaticFiles();
+app.UseAuthentication();
 
 //app.UseMvcWithDefaultRoute();
 
