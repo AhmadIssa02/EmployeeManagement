@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
 {
-    [Route("[Controller]")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {
@@ -29,8 +29,8 @@ namespace EmployeeManagement.Controllers
             {
                 _logger.LogInformation("Get Department Start");
                 var department = await _unitOfWork.Departments.Get(d =>d.id == id);
-                //var results = _mapper.Map<IList<Department>>(departments);
-                return Ok(department);
+                var result = _mapper.Map<DepartmentDto>(department);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -49,8 +49,8 @@ namespace EmployeeManagement.Controllers
             {
                 _logger.LogInformation("Get Department Start");
                 var departments = await _unitOfWork.Departments.GetAll();
-                //var results = _mapper.Map<IList<Department>>(departments);
-                return Ok(departments);
+                var results = _mapper.Map<IList<DepartmentDto>>(departments);
+                return Ok(results);
             }
             catch (Exception ex)
             {

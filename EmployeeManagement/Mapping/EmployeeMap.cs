@@ -13,6 +13,9 @@ namespace EmployeeManagement.Mapping
 
             // If you also want to map the other way around, you can use:
             CreateMap<EmployeeDTO, Employee>().ReverseMap();
+            CreateMap<DepartmentDto, Department>().ReverseMap();
+            CreateMap<DepartmentDto, Department>();
+
         }
     }
 }

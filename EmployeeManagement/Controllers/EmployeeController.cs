@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EmployeeManagement.Models.Domain;
+using EmployeeManagement.Models.DTOs;
 using EmployeeManagement.Models.IRepository;
 using EmployeeManagement.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +27,18 @@ namespace EmployeeManagement.Controllers
         public async Task<IActionResult> GetEmployeeById(int id)
         {
             var emp = await _unitOfWork.Employees.Get(e => e.Id == id, include: q => q.Include(e => e.dept));
-            Console.WriteLine("hi");
-            _logger.LogTrace("hello");
-            return Ok(emp);
+            var result = _mapper.Map<EmployeeDTO>(emp);
+  //          Console.WriteLine("hi");
+//            _logger.LogTrace("hello");
+            return Ok(result);
         }
         [HttpGet("getAll")]
         //[Produces("application/xml")]
-        public IActionResult GetAll()
+        public async Task<IActionResult>GetAll()
         {
-            return Ok(_employeeRepository.GetAll());
+            var emps = await _unitOfWork.Employees.GetAll(include: q => q.Include(e => e.dept));
+            var result = _mapper.Map<IList<EmployeeDTO>>(emps);
+            return Ok(result);
         }
         [HttpPost]
         public IActionResult AddEmployee(Models.DTOs.EmployeeDTO employeeDto)
