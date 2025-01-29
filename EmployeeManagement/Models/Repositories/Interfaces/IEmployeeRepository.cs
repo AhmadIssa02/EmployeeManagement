@@ -1,9 +1,10 @@
 ﻿using EmployeeManagement.Models.Domain;
 using EmployeeManagement.Models.DTOs;
+using EmployeeManagement.Models.IRepository;
 
 namespace EmployeeManagement.Models.Repositories.Interfaces
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeRepository    
     {
         EmployeeDTO GetById(int id);
         IList <EmployeeDTO> GetAll();

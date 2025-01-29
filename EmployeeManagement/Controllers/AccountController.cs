@@ -20,35 +20,53 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
+        [Route("Register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            if (!ModelState.IsValid)
-            {
-                BadRequest(ModelState);
-             }
 
-            var user = new APIUser
+            try
             {
-                FirstName = registerDto.FirstName,
-                LastName = registerDto.LastName,
-                Email = registerDto.Email,
-                UserName = registerDto.Email
-            };
 
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
+                if (!ModelState.IsValid)
+                {
+                    BadRequest(ModelState);
+                }
+
+                var user = new APIUser
+                {
+                    FirstName = registerDto.FirstName,
+                    LastName = registerDto.LastName,
+                    Email = registerDto.Email,
+                    UserName = registerDto.Email
+                };
+
+                var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+                if (!result.Succeeded)
+                {
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                    return BadRequest(ModelState);
+                }
+                await _userManager.AddToRolesAsync(user, registerDto.Roles);
                 return Accepted();
             }
-
-            foreach(var error in result.Errors)
+            catch(Exception ex)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                return Problem(ex.Message, statusCode: 500);
             }
 
-            return Accepted(ModelState);
+        }
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login(RegisterDto registerDto)
+        {
+           throw new NotImplementedException();
         }
     }
 }

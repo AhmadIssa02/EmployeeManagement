@@ -1,4 +1,5 @@
 using EmployeeManagement.Data;
+using EmployeeManagement.ExtensionMethod;
 using EmployeeManagement.Models.Domain;
 using EmployeeManagement.Models.IRepository;
 using EmployeeManagement.Models.Repositories.Implemintations;
@@ -11,16 +12,25 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
-builder.Services.AddControllers().AddXmlSerializerFormatters();
-builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeDB")));
+builder.Services.ConfigureController();
+builder.Services.ConfigureDbContext(builder.Configuration);
 
-builder.Services.AddIdentity<APIUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
-builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddIdentity<APIUser, IdentityRole>(op =>
+{
+    op.User.RequireUniqueEmail = true;
+    op.Password.RequiredUniqueChars = 0;
+    op.Password.RequiredLength = 5;
+    op.Password.RequireNonAlphanumeric=false;
+    op.Password.RequireUppercase=false;
+    op.Password.RequireDigit =false;
+}
+).AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.ConfigureAppServices();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.ConfigureAutoMapper();
+builder.Services.ConfigureJWT(builder.Configuration);
 
 
 var app = builder.Build();
@@ -45,6 +55,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseAuthentication();
+app.UseAuthorization();
 
 //app.UseMvcWithDefaultRoute();
 

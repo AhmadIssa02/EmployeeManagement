@@ -17,6 +17,7 @@ namespace EmployeeManagement.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.seedDepartment();
             modelBuilder.seedEmployee();
+            modelBuilder.seedRoles();
         }
 
 
