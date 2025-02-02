@@ -47,6 +47,7 @@ namespace EmployeeManagement.Services
         private async Task<List<Claim>> GetClaims()
         {
             var claims = new List<Claim>
+
        {
            new Claim(ClaimTypes.Name, _user.UserName)
        };

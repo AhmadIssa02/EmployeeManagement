@@ -41,6 +41,10 @@ if (app.Environment.IsDevelopment())
 
 }
 
+app.UseExceptionHandler();
+
+app.ConfigureExceptionHandler();
+
 app.UseRouting();
 app.UseStaticFiles();
 app.UseAuthentication();

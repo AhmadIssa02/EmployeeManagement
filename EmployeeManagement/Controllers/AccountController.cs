@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using EmployeeManagement.Models.DTOs;
 using EmployeeManagement.Services;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace EmployeeManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<APIUser> _userManager;
@@ -75,7 +77,7 @@ namespace EmployeeManagement.Controllers
         {
             _logger.LogInformation($"Login Attempt for {userDTO.Email} ");
             if (!ModelState.IsValid)
-            {
+            {   
                 return BadRequest(ModelState);
             }
 

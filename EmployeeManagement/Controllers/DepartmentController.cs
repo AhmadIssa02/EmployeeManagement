@@ -42,6 +42,7 @@ namespace EmployeeManagement.Controllers
         }
 
 
+        [Authorize(Roles = "user")]
         [HttpGet("GetAll")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
